@@ -1,0 +1,37 @@
+/* 
+    Document   : easy3djs
+    Created on : 30.04.2013, 15:37:13
+    Author     : Paul
+
+svg
+*/
+.easy-3djs  {
+    font: 10px sans-serif;
+    border: 3px lightgray solid;
+    border-radius: 10px;
+    display: block;
+    padding-bottom: 20px;
+}
+
+.easy-3djs .axis path,
+.easy-3djs .axis line {
+    fill: none;
+    stroke: #000;
+}
+
+.easy-3djs .x.axis path {
+    display: none;
+}
+
+.easy-3djs .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 3px;
+}
+
+.easy-3djs .ideal {
+    fill: none;
+    stroke: red;
+    stroke-width: 3px;
+}
+
