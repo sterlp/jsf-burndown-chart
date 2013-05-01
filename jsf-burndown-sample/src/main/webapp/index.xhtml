@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:easyBurn="http://java.sun.com/jsf/composite/easy-burndown"
+      xmlns:easy3djs="http://java.sun.com/jsf/composite/easy3djs"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Easy JSF Burndown Sample</ui:insert></title>
+        <h:outputStylesheet name="css/base.css" />
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <easy3djs:graph graphData="#{myBean.burndown}" />
+            <h:dataTable value="#{myBean.burndown.burndowns}" var="day">
+                <h:column>
+                    <f:facet name="header">Date</f:facet>
+                    #{day.date}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Hours</f:facet>
+                    #{day.hours}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Comment</f:facet>
+                    #{day.comment}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

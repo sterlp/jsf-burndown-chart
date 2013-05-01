@@ -6,33 +6,42 @@ easy.escapeColons = function(string) {
     return(string.replace(/:/g, "\\:"));
 };
 easy.renderBurnDown = function(inD3, inData, inSelector) {
-    var d3 = inD3, data = inData, selector = easy.escapeColons(inSelector);
+    var d3 = inD3,
+        parseDate = d3.time.format("%Y-%m-%d").parse,
+        startDate = parseDate(inData.start),
+        planedHours = inData.planedHours,
+        endDate = parseDate(inData.end),
+        data = inData.burndowns,
+        timeDomain = inData.timeDomain,
+        parsedTimeDomain = [],
+        selector = easy.escapeColons(inSelector);
     
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = (40 * timeDomain.length) - margin.left - margin.right,
+        height = (inData.planedHours * 2.5) - margin.top - margin.bottom;
 
+    if (width < 200) width = 400;
+    if (height < 200) height = 400;
 
     var parseDate = d3.time.format("%Y-%m-%d").parse;
-    var timeDomain = [];
-    var lastDate;
-    
+    // parse dates in data
     for (var i = 0; i < data.length; ++i) {
       var d = data[i], old = d.date;
       d.date = parseDate(d.date);
-      if (!d.date) throw "Failed to parse data --> " + old;
-      // collect each input value for the time domain (xaxis)
-      // but skip duplicated values.
-      if (!lastDate || lastDate.getTime() != d.date.getTime()) {
-          timeDomain.push(d.date);
-      }
-      lastDate = d.date;
+      if (!d.date) throw "Failed to parse date in burndowns --> " + old;
     }
+    // parse dates in data
+    for (var i = 0; i < timeDomain.length; ++i) {
+      var d = timeDomain[i], old = d;
+      d = parseDate(d);
+      if (!d) throw "Failed to parse date in time domain --> " + old;
+      parsedTimeDomain.push(d);
+    }
+    timeDomain = parsedTimeDomain;
 
     var x = d3.time.scale();
-
     var y = d3.scale.linear()
-        .range([height, 0]);
+              .range([height, 0]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -82,7 +91,7 @@ easy.renderBurnDown = function(inD3, inData, inSelector) {
         .text("Hours");
 
     // take the first data point and the date of the last point
-    var ideal = [data[0],{date: data[data.length - 1].date, hours: 0}];
+    var ideal = [{date: startDate, hours: planedHours},{date: endDate, hours: 0}];
     svg.append("path")
         .datum(ideal)
         .attr("class", "ideal")

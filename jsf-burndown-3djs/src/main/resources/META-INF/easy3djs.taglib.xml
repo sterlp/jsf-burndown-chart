@@ -4,6 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
 
-    <namespace>http://easy.jsf.3djs.org/taglib</namespace>
-    <composite-library-name>easy3djs</composite-library-name>
+    <namespace>http://easy-jsf.3djs.org/taglib</namespace>
+    <composite-library-name>easy-burndown</composite-library-name>
 </facelet-taglib>

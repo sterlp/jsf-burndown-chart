@@ -5,14 +5,13 @@
         xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <cc:interface componentType="org.easy.jsf.d3js.GraphContainer">
-        <cc:attribute name="graphData" />
-        <cc:attribute name="useMin" default="true" type="java.util.Boolean" />
-        <cc:attribute name="addD3jsLib" default="true" type="java.util.Boolean" />
+        <cc:attribute name="graphData" required="true" type="org.easy.jsf.d3js.burndown.IterationBurndown">
+        </cc:attribute>
         <cc:facet name="header"/>
     </cc:interface>
 
     <cc:implementation>
-        <h:outputScript rendered="#{cc.attrs.addD3jsLib}" library="d3v3" name="d3.v3.js" target="head" />
+        <h:outputScript library="d3v3" name="d3.v3.js" target="head" />
         <h:outputScript library="script" name="easyBurndown.js" target="head" />
         <h:outputStylesheet library="easy3djs" name="easy3djs.css"/>
 
