@@ -5,8 +5,9 @@
         xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <cc:interface componentType="org.easy.jsf.d3js.GraphContainer">
-        <cc:attribute name="graphData" required="true" type="org.easy.jsf.d3js.burndown.IterationBurndown">
-        </cc:attribute>
+        <cc:attribute name="graphData" required="true" type="org.easy.jsf.d3js.burndown.IterationBurndown" />
+        <cc:attribute name="width" required="false" default="0" type="java.lang.Integer" />
+        <cc:attribute name="height" required="false" default="0" type="java.lang.Integer" />
         <cc:facet name="header"/>
     </cc:interface>
 
@@ -15,13 +16,16 @@
         <h:outputScript library="script" name="easyBurndown.js" target="head" />
         <h:outputStylesheet library="easy3djs" name="easy3djs.css"/>
 
-        <h:panelGroup styleClass="easy-3djs">
+        <h:panelGroup styleClass="easy-3djs" layout="block">
             <h:panelGroup layout="block" styleClass="easy-3djs-head">
                 <cc:renderFacet name="header"/>
             </h:panelGroup>
             <h:panelGroup id="garphDiv" layout="block" styleClass="easy-3djs-graph" rendered="#{cc.attrs.graphData != null}">
                 <script type="text/javascript">
-                    easy.renderBurnDown(d3, #{cc.toJson(cc.attrs.graphData)}, "#" + "#{cc.clientId}" + ":garphDiv");
+                    easy.renderBurnDown(
+                            {d3: d3, width: #{cc.attrs.width}, height: #{cc.attrs.height}}, 
+                            #{cc.toJson(cc.attrs.graphData)}, 
+                            "#" + "#{cc.clientId}" + ":garphDiv");
                 </script>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="easy-3djs-footer">

@@ -3,6 +3,7 @@ package org.easy.jsf.d3js.burndown;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -19,7 +20,9 @@ public class IterationBurndown implements Serializable {
     private int planedHours;
     private int hoursRemaining;
     private List<DailyBurndown> burndowns = new ArrayList<DailyBurndown>();
-
+    
+    private boolean includeWeekEnd = false;
+    
     public IterationBurndown() {
         super();
     }
@@ -31,6 +34,11 @@ public class IterationBurndown implements Serializable {
         this.planedHours = planedHours;
         this.hoursRemaining = planedHours;
     }
+
+    public IterationBurndown(LocalDate start, LocalDate end, int planedHours, boolean includeWeekEnd) {
+        this(start, end, planedHours);
+        this.includeWeekEnd = includeWeekEnd;
+    }
     
     public List<LocalDate> getTimeDomain() {
         List<LocalDate> result = new ArrayList<LocalDate>();
@@ -40,7 +48,12 @@ public class IterationBurndown implements Serializable {
             // add all days in between start and end date
             int totalDay = Days.daysBetween(start, end).getDays();
             for (int i = 1; i < totalDay; i++) {
-                result.add(start.plusDays(i));
+                LocalDate anyDay = start.plusDays(i);
+                if (includeWeekEnd 
+                    || (anyDay.getDayOfWeek() != DateTimeConstants.SATURDAY
+                        && anyDay.getDayOfWeek() != DateTimeConstants.SUNDAY)) {
+                    result.add(start.plusDays(i));
+                }
             }
             result.add(end);
         } else {
@@ -80,6 +93,14 @@ public class IterationBurndown implements Serializable {
 
     public void setBurndowns(List<DailyBurndown> burndowns) {
         this.burndowns = burndowns;
+    }
+
+    public boolean isIncludeWeekEnd() {
+        return includeWeekEnd;
+    }
+
+    public void setIncludeWeekEnd(boolean includeWeekEnd) {
+        this.includeWeekEnd = includeWeekEnd;
     }
 
     /**

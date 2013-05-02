@@ -15,11 +15,15 @@
 
     <h:body>
         <h:form>
-            <easy3djs:graph graphData="#{myBean.burndown}" />
+            <easy3djs:burndown graphData="#{myBean.burndown}" width="1100" height="500" />
             <h:dataTable value="#{myBean.burndown.burndowns}" var="day">
                 <h:column>
                     <f:facet name="header">Date</f:facet>
                     #{day.date}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Day</f:facet>
+                    #{day.date.dayOfWeek().getAsText()}
                 </h:column>
                 <h:column>
                     <f:facet name="header">Hours</f:facet>

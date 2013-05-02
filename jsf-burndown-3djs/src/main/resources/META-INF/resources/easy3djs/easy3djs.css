@@ -5,12 +5,11 @@
 
 svg
 */
-.easy-3djs  {
+.easy-3djs svg  {
     font: 10px sans-serif;
     border: 3px lightgray solid;
     border-radius: 10px;
     display: block;
-    padding-bottom: 20px;
 }
 
 .easy-3djs .axis path,

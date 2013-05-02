@@ -5,8 +5,8 @@ if (!window.easy) {
 easy.escapeColons = function(string) {
     return(string.replace(/:/g, "\\:"));
 };
-easy.renderBurnDown = function(inD3, inData, inSelector) {
-    var d3 = inD3,
+easy.renderBurnDown = function(config, inData, inSelector) {
+    var d3 = config.d3 || d3,
         parseDate = d3.time.format("%Y-%m-%d").parse,
         startDate = parseDate(inData.start),
         planedHours = inData.planedHours,
@@ -14,14 +14,20 @@ easy.renderBurnDown = function(inD3, inData, inSelector) {
         data = inData.burndowns,
         timeDomain = inData.timeDomain,
         parsedTimeDomain = [],
-        selector = easy.escapeColons(inSelector);
-    
-    var margin = {top: 20, right: 20, bottom: 30, left: 50},
-        width = (40 * timeDomain.length) - margin.left - margin.right,
-        height = (inData.planedHours * 2.5) - margin.top - margin.bottom;
+        selector = easy.escapeColons(inSelector),
+        // default width and height, based on the given data
+        width = (40 * timeDomain.length),
+        height = (inData.planedHours * 2);
 
-    if (width < 200) width = 400;
-    if (height < 200) height = 400;
+    if (config.width > 0) width = config.width;
+    if (config.height > 0) height = config.height;
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 50},
+        width = width - margin.left - margin.right,
+        height = height - margin.top - margin.bottom;
+    // make sure we are not to small
+    if (width < 200) width = 100;
+    if (height < 200) height = 100;
 
     var parseDate = d3.time.format("%Y-%m-%d").parse;
     // parse dates in data

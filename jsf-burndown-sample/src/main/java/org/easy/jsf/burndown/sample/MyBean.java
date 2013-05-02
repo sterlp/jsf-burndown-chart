@@ -25,9 +25,9 @@ public class MyBean implements Serializable {
         burndown.addDay(new LocalDate(2013, 5, 2), -16, "Unplanned Bug");
         burndown.addDay(new LocalDate(2013, 5, 2), 40, null);
         burndown.addDay(new LocalDate(2013, 5, 3), 12, null);
-        burndown.addDay(new LocalDate(2013, 5, 4), 33, null);
-        burndown.addDay(new LocalDate(2013, 5, 5), -44, "Added a new small story");
-        burndown.addDay(new LocalDate(2013, 5, 5), 24, null);
+        burndown.addDay(new LocalDate(2013, 5, 6), 33, null);
+        burndown.addDay(new LocalDate(2013, 5, 7), -44, "Added a new small story");
+        burndown.addDay(new LocalDate(2013, 5, 7), 24, null);
     }
 
     public IterationBurndown getBurndown() {
