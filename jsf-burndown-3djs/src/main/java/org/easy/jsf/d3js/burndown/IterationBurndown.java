@@ -23,16 +23,14 @@ public class IterationBurndown implements Serializable {
     
     private boolean includeWeekEnd = false;
     
-    public IterationBurndown() {
-        super();
-    }
-
     public IterationBurndown(LocalDate start, LocalDate end, int planedHours) {
-        this();
+        super();
         this.start = start;
         this.end = end;
         this.planedHours = planedHours;
         this.hoursRemaining = planedHours;
+        // the initial point 0,0
+        burndowns.add(new DailyBurndown(start, planedHours));
     }
 
     public IterationBurndown(LocalDate start, LocalDate end, int planedHours, boolean includeWeekEnd) {
