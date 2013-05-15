@@ -8,6 +8,7 @@
         <cc:attribute name="graphData" required="true" type="org.easy.jsf.d3js.burndown.IterationBurndown" />
         <cc:attribute name="width" required="false" default="0" type="java.lang.Integer" />
         <cc:attribute name="height" required="false" default="0" type="java.lang.Integer" />
+        <cc:attribute name="showGrid" required="false" default="true" type="java.lang.Boolean" />
         <cc:facet name="header"/>
     </cc:interface>
 
@@ -23,7 +24,7 @@
             <h:panelGroup id="garphDiv" layout="block" styleClass="easy-3djs-graph" rendered="#{cc.attrs.graphData != null}">
                 <script type="text/javascript">
                     easy.renderBurnDown(
-                            {d3: d3, width: #{cc.attrs.width}, height: #{cc.attrs.height}}, 
+                            {d3: d3, width: #{cc.attrs.width}, height: #{cc.attrs.height}, showGrid: #{cc.attrs.showGrid} }, 
                             #{cc.toJson(cc.attrs.graphData)}, 
                             "#" + "#{cc.clientId}" + ":garphDiv");
                 </script>

@@ -17,6 +17,20 @@
         <h:form>
             <easy3djs:burndown graphData="#{myBean.burndown}" width="1100" height="500" />
             <h:dataTable value="#{myBean.burndown.burndowns}" var="day">
+                <f:facet name="caption">
+                    <h2 style="margin-bottom: 5px">
+                        #{myBean.burndown.hoursDone}h of #{myBean.burndown.planedHours}h done. 
+                        (<h:outputText value="#{(myBean.burndown.hoursDone / myBean.burndown.planedHours) * 100}">
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>%)
+                    </h2>
+                    <h3 style="margin-top: 0px;">
+                        #{myBean.burndown.hoursAdded}h unplanned 
+                        (<h:outputText value="#{(myBean.burndown.hoursAdded / myBean.burndown.planedHours) * 100}">
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>%)
+                    </h3>
+                </f:facet>
                 <h:column>
                     <f:facet name="header">Date</f:facet>
                     #{day.date}

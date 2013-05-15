@@ -1,9 +1,28 @@
 if (!window.easy) {
     var easy = window.easy = {};
 }
+easy.isNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 // see http://courses.coreservlets.com/Course-Materials/pdf/jsf/jsf2/JSF2-Composite-Components-4.pdf
 easy.escapeColons = function(string) {
     return(string.replace(/:/g, "\\:"));
+};
+
+/** http://www.d3noob.org/2013/01/adding-grid-lines-to-d3js-graph.html */
+easy.make_x_axis = function(d3, x, ticks) {
+    if (!ticks) ticks = 10;
+    return d3.svg.axis()
+        .scale(x)
+         .orient("bottom")
+         .ticks(ticks);
+};
+easy.make_y_axis = function(d3, y, ticks) {        
+    if (!ticks) ticks = 10;
+    return d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(ticks);
 };
 easy.renderBurnDown = function(config, inData, inSelector) {
     var d3 = config.d3 || d3,
@@ -17,17 +36,18 @@ easy.renderBurnDown = function(config, inData, inSelector) {
         selector = easy.escapeColons(inSelector),
         // default width and height, based on the given data
         width = (40 * timeDomain.length),
-        height = (inData.planedHours * 2);
+        height = (inData.planedHours * 2),
+        showGrid = config.config || true;
 
-    if (config.width > 0) width = config.width;
-    if (config.height > 0) height = config.height;
+    if (easy.isNumber(config.width) && config.width > 0) width = config.width;
+    if (easy.isNumber(config.height) && config.height > 0) height = config.height;
 
     var margin = {top: 20, right: 20, bottom: 30, left: 50},
         width = width - margin.left - margin.right,
         height = height - margin.top - margin.bottom;
     // make sure we are not to small
-    if (width < 200) width = 100;
-    if (height < 200) height = 100;
+    if (width < 100) width = 100;
+    if (height < 100) height = 100;
 
     var parseDate = d3.time.format("%Y-%m-%d").parse;
     // parse dates in data
@@ -81,7 +101,26 @@ easy.renderBurnDown = function(config, inData, inSelector) {
     x.range(timeOutputRange);
     x.domain(timeDomain);
     y.domain([0, d3.max(data, function(d) { return d.hours; })]);
+    
+    // append grid
+    if (showGrid) {
+        svg.append("g")         
+            .attr("class", "grid")
+            .attr("transform", "translate(0," + height + ")")
+            .call(easy.make_x_axis(d3, x, function() { return timeDomain; })
+                .tickSize(-height, 0, 0)
+                .tickFormat("")
+            );
 
+        svg.append("g")         
+            .attr("class", "grid")
+            .call(easy.make_y_axis(d3, y)
+                .tickSize(-width, 0, 0)
+                .tickFormat("")
+            );
+    }
+    
+    // append axis
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -114,4 +153,5 @@ easy.renderBurnDown = function(config, inData, inSelector) {
         .datum(data)
         .attr("class", "line")
         .attr("d", line);
+
 };

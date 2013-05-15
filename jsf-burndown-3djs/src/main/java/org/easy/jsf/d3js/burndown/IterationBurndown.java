@@ -17,8 +17,10 @@ public class IterationBurndown implements Serializable {
     private LocalDate start;
     /** End of the iteration */
     private LocalDate end;
-    private int planedHours;
-    private int hoursRemaining;
+    private int planedHours = 0;
+    private int hoursRemaining = 0;
+    private int hoursDone = 0;
+    private int hoursAdded = 0;
     private List<DailyBurndown> burndowns = new ArrayList<DailyBurndown>();
     
     private boolean includeWeekEnd = false;
@@ -85,10 +87,18 @@ public class IterationBurndown implements Serializable {
         this.hoursRemaining = planedHours;
     }
 
+    /** 
+     * Getter and setter for serialization, don't use the List directly 
+     * @see #addDay(org.joda.time.LocalDate, int, java.lang.String) 
+     */
     public List<DailyBurndown> getBurndowns() {
         return burndowns;
     }
 
+    /** 
+     * Getter and setter for serialization, don't use the List directly 
+     * @see #addDay(org.joda.time.LocalDate, int, java.lang.String) 
+     */
     public void setBurndowns(List<DailyBurndown> burndowns) {
         this.burndowns = burndowns;
     }
@@ -102,15 +112,34 @@ public class IterationBurndown implements Serializable {
     }
 
     /**
-     * Adds a new day to the burndown.
+     * Adds a new day to the burndown - and does calcualtions. This
+     * method should be used to add data to the burn down.
+     * 
      * @param day the day to add
      * @param hoursDone the hours done, could also be negative for up-scalling
      * @param comment optional comment
      */
     public void addDay(LocalDate day, int hoursDone, String comment) {
         this.hoursRemaining -= hoursDone;
+        if (hoursDone < 0) {
+            this.hoursAdded += hoursDone *(-1);
+        } else {
+            this.hoursDone += hoursDone;
+        }
         this.burndowns.add(
                 new DailyBurndown(day, 
                 hoursRemaining, comment));
+    }
+
+    public int getHoursRemaining() {
+        return hoursRemaining;
+    }
+
+    public int getHoursDone() {
+        return hoursDone;
+    }
+
+    public int getHoursAdded() {
+        return hoursAdded;
     }
 }
