@@ -13,13 +13,15 @@ public class MyBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    IterationBurndown burndown;
+    private IterationBurndown burndown;
+    
+    private boolean includeWeekend = false;
     
     @PostConstruct
     public void afterLoad() {
         burndown = new IterationBurndown(
                 new LocalDate(2013, 5, 1), 
-                new LocalDate(2013, 5, 31), 250);
+                new LocalDate(2013, 5, 29), 250, includeWeekend);
         
         burndown.addDay(new LocalDate(2013, 5, 2), 8, "First Day");
         burndown.addDay(new LocalDate(2013, 5, 3), -16, "Unplanned Bug");
@@ -36,5 +38,13 @@ public class MyBean implements Serializable {
 
     public void setBurndown(IterationBurndown burndown) {
         this.burndown = burndown;
+    }
+
+    public boolean isIncludeWeekend() {
+        return includeWeekend;
+    }
+
+    public void setIncludeWeekend(boolean includeWeekend) {
+        this.includeWeekend = includeWeekend;
     }
 }

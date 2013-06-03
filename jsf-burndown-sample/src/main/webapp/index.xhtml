@@ -14,40 +14,51 @@
     </h:head>
 
     <h:body>
-        <h:form>
+        <h:form id="myForm">
             <easy3djs:burndown graphData="#{myBean.burndown}" width="1100" height="500" />
-            <h:dataTable value="#{myBean.burndown.burndowns}" var="day">
-                <f:facet name="caption">
-                    <h2 style="margin-bottom: 5px">
-                        #{myBean.burndown.hoursDone}h of #{myBean.burndown.planedHours}h done. 
-                        (<h:outputText value="#{(myBean.burndown.hoursDone / myBean.burndown.planedHours) * 100}">
-                            <f:convertNumber maxFractionDigits="2" />
-                        </h:outputText>%)
-                    </h2>
-                    <h3 style="margin-top: 0px;">
-                        #{myBean.burndown.hoursAdded}h unplanned 
-                        (<h:outputText value="#{(myBean.burndown.hoursAdded / myBean.burndown.planedHours) * 100}">
-                            <f:convertNumber maxFractionDigits="2" />
-                        </h:outputText>%)
-                    </h3>
-                </f:facet>
-                <h:column>
-                    <f:facet name="header">Date</f:facet>
-                    #{day.date}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Day</f:facet>
-                    #{day.date.dayOfWeek().getAsText()}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Hours</f:facet>
-                    #{day.hours}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Comment</f:facet>
-                    #{day.comment}
-                </h:column>
-            </h:dataTable>
+            
+            <h:panelGrid columns="2">
+                <h:panelGrid columns="2">
+                    <h:outputText value="Include Weekend: " />
+                    <h:selectBooleanCheckbox value="#{myBean.includeWeekend}">
+                        <f:ajax event="click" listener="#{myBean.afterLoad}" render=":myForm" />
+                    </h:selectBooleanCheckbox>
+
+                    <h:outputText value="#{myBean.burndown.hoursDone}h of #{myBean.burndown.planedHours}h done." />
+                    <h:outputText value="#{(myBean.burndown.hoursDone / myBean.burndown.planedHours)}">
+                        <f:convertNumber type="percent" />
+                    </h:outputText>
+
+                    <h:outputText value="Iteration Start: #{myBean.burndown.start}" />
+                    <h:outputText value="Iteration End: #{myBean.burndown.end}" />
+                    <h:outputText value="Work Days: #{myBean.burndown.workDays}" />
+                    <h:outputText value="Total Days: #{myBean.burndown.daysBetweenStartAndEnd}" />
+                    
+                    <h:outputText value="Needed daily Burndown:" />
+                    <h:outputText value="#{myBean.burndown.hoursRemaining / myBean.burndown.workDays}">
+                        <f:convertNumber maxFractionDigits="0" />
+                    </h:outputText>
+                </h:panelGrid>
+                <h:dataTable value="#{myBean.burndown.burndowns}" var="day">
+                    <h:column>
+                        <f:facet name="header">Date</f:facet>
+                        #{day.date}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Day</f:facet>
+                        #{day.date.dayOfWeek().getAsText()}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Hours</f:facet>
+                        #{day.hours}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Comment</f:facet>
+                        #{day.comment}
+                    </h:column>
+                </h:dataTable>
+            </h:panelGrid>
+            
         </h:form>
     </h:body>
 </html>
