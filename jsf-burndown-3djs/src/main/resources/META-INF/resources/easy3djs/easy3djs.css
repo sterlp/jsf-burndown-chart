@@ -49,3 +49,7 @@ svg
 .grid path {
       stroke-width: 0;
 }
+
+text.comment {
+    font-weight: bold;
+}

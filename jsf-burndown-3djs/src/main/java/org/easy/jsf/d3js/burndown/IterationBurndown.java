@@ -27,7 +27,7 @@ public class IterationBurndown implements Serializable {
     private final boolean includeWeekend;
     private final int daysBetweenStartAndEnd;
 
-    private int planedHours = 0;
+    private int plannedHours = 0;
     private int hoursRemaining = 0;
     private int hoursDone = 0;
     private int hoursAdded = 0;
@@ -40,20 +40,20 @@ public class IterationBurndown implements Serializable {
         this(start, end, planedHours, false);
     }
 
-    public IterationBurndown(LocalDate start, LocalDate end, int planedHours, boolean includeWeekend) {
+    public IterationBurndown(LocalDate start, LocalDate end, int plannedHours, boolean includeWeekend) {
         super();
         this.includeWeekend = includeWeekend;
         this.start = start;
         this.end = end;
-        this.planedHours = planedHours;
-        this.hoursRemaining = planedHours;
+        this.plannedHours = plannedHours;
+        this.hoursRemaining = plannedHours;
         if (this.start == null) throw new NullPointerException("Start and end date needs to be set. But start is null");
         if (this.end == null) throw new NullPointerException("Start and end date needs to be set. But end is null");
         if (this.end.isBefore(this.start)) throw new IllegalArgumentException("End date must be after the start date");
         if (this.end.isEqual(this.start)) throw new IllegalArgumentException("End date must be after the start date");
 
         // the initial point something like (01-01-2013 ; 250)
-        burndowns.add(new DailyBurndown(start, planedHours));
+        burndowns.add(new DailyBurndown(start, plannedHours));
         // add all days in between start and end date
         daysBetweenStartAndEnd = Days.daysBetween(start, end).getDays() + 1; // we include all days
         workDays = buidTimeDomnain();
@@ -93,13 +93,13 @@ public class IterationBurndown implements Serializable {
         return end;
     }
 
-    public int getPlanedHours() {
-        return planedHours;
+    public int getPlannedHours() {
+        return plannedHours;
     }
 
-    public void setPlanedHours(int planedHours) {
-        this.planedHours = planedHours;
-        this.hoursRemaining = planedHours;
+    public void setPlannedHours(int plannedHours) {
+        this.plannedHours = plannedHours;
+        this.hoursRemaining = plannedHours;
     }
 
     /** 
@@ -164,6 +164,6 @@ public class IterationBurndown implements Serializable {
 
     @Override
     public String toString() {
-        return "IterationBurndown{" + "start=" + start + ", end=" + end + ", workDays=" + workDays + ", daysBetweenStartAndEnd=" + daysBetweenStartAndEnd + ", planedHours=" + planedHours + ", hoursRemaining=" + hoursRemaining + ", hoursDone=" + hoursDone + ", hoursAdded=" + hoursAdded  + ", includeWeekEnd=" + includeWeekend + ", burndowns=" + burndowns +  ", timeDomain=" + timeDomain + '}';
+        return "IterationBurndown{" + "start=" + start + ", end=" + end + ", workDays=" + workDays + ", daysBetweenStartAndEnd=" + daysBetweenStartAndEnd + ", plannedHours=" + plannedHours + ", hoursRemaining=" + hoursRemaining + ", hoursDone=" + hoursDone + ", hoursAdded=" + hoursAdded  + ", includeWeekEnd=" + includeWeekend + ", burndowns=" + burndowns +  ", timeDomain=" + timeDomain + '}';
     }
 }
