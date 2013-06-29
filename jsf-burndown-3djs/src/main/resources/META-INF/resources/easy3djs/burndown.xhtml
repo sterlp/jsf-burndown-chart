@@ -9,24 +9,38 @@
         <cc:attribute name="width" required="false" default="0" type="java.lang.Integer" />
         <cc:attribute name="height" required="false" default="0" type="java.lang.Integer" />
         <cc:attribute name="showGrid" required="false" default="true" type="java.lang.Boolean" />
+        <cc:attribute name="showComments" required="false" default="true" type="java.lang.Boolean" />
         <cc:facet name="header"/>
     </cc:interface>
 
     <cc:implementation>
-        <h:outputScript library="d3v3" name="d3.v3.js" target="head" />
-        <h:outputScript library="script" name="easyBurndown.js" target="head" />
+        <h:outputScript library="webjars/d3js/3.1.5" name="d3.min.js" target="head"/>
+        <!--<h:outputScript library="webjars/d3js/3.1.5" name="d3.js" target="head"/>-->
+        <h:outputScript library="webjars/simple-burndown-chart/1.0.0-SNAPSHOT" name="simple-burndown-chart.js" target="head"/>
         <h:outputStylesheet library="easy3djs" name="easy3djs.css"/>
 
         <h:panelGroup styleClass="easy-3djs" layout="block">
             <h:panelGroup layout="block" styleClass="easy-3djs-head">
                 <cc:renderFacet name="header"/>
             </h:panelGroup>
-            <h:panelGroup id="garphDiv" layout="block" styleClass="easy-3djs-graph" rendered="#{cc.attrs.graphData != null}">
+            <h:panelGroup id="graphDiv" layout="block" styleClass="easy-3djs-graph" rendered="#{cc.attrs.graphData != null}">
                 <script type="text/javascript">
-                    easy.renderBurnDown(
-                            {d3: d3, width: #{cc.attrs.width}, height: #{cc.attrs.height}, showGrid: #{cc.attrs.showGrid} }, 
-                            #{cc.toJson(cc.attrs.graphData)}, 
-                            "#" + "#{cc.clientId}" + ":garphDiv");
+                    (function() {
+                        var selector = "#" + "#{cc.clientId}" + ":graphDiv";
+                        selector = selector.replace(/:/g, "\\:");
+
+                        SBD.render(
+                                #{cc.toJson(cc.attrs.graphData)},
+                                {
+                                    d3: d3,
+                                    chartNodeSelector: selector,
+                                    width: #{cc.attrs.width},
+                                    height: #{cc.attrs.height},
+                                    showGrid: #{cc.attrs.showGrid},
+                                    showComments: #{cc.attrs.showComments},
+                                    dateFormat: "%Y-%m-%d"
+                                });
+                   })();
                 </script>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="easy-3djs-footer">

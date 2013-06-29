@@ -24,8 +24,8 @@
                         <f:ajax event="click" listener="#{myBean.afterLoad}" render=":myForm" />
                     </h:selectBooleanCheckbox>
 
-                    <h:outputText value="#{myBean.burndown.hoursDone}h of #{myBean.burndown.planedHours}h done." />
-                    <h:outputText value="#{(myBean.burndown.hoursDone / myBean.burndown.planedHours)}">
+                    <h:outputText value="#{myBean.burndown.hoursDone}h of #{myBean.burndown.plannedHours}h done." />
+                    <h:outputText value="#{(myBean.burndown.hoursDone / myBean.burndown.plannedHours)}">
                         <f:convertNumber type="percent" />
                     </h:outputText>
 
