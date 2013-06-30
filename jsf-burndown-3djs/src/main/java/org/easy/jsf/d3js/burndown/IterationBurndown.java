@@ -2,6 +2,7 @@ package org.easy.jsf.d3js.burndown;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
@@ -36,8 +37,8 @@ public class IterationBurndown implements Serializable {
     private final List<LocalDate> timeDomain = new ArrayList<LocalDate>();
     
     
-    public IterationBurndown(LocalDate start, LocalDate end, int planedHours) {
-        this(start, end, planedHours, false);
+    public IterationBurndown(LocalDate start, LocalDate end, int plannedHours) {
+        this(start, end, plannedHours, false);
     }
 
     public IterationBurndown(LocalDate start, LocalDate end, int plannedHours, boolean includeWeekend) {
@@ -78,7 +79,9 @@ public class IterationBurndown implements Serializable {
     private boolean considerDate(final LocalDate date) {
         return includeWeekend 
                 || (date.getDayOfWeek() != DateTimeConstants.SATURDAY
-                    && date.getDayOfWeek() != DateTimeConstants.SUNDAY);
+                    && date.getDayOfWeek() != DateTimeConstants.SUNDAY)
+                || this.start.equals(date)
+                || this.end.equals(date);
     }
     
     public List<LocalDate> getTimeDomain() {
@@ -136,6 +139,11 @@ public class IterationBurndown implements Serializable {
         this.burndowns.add(
                 new DailyBurndown(day, 
                 hoursRemaining, comment));
+        
+        if (!this.timeDomain.contains(day)) {
+            this.timeDomain.add(day);
+            Collections.sort(timeDomain);
+        }
     }
 
     public int getHoursRemaining() {
@@ -164,6 +172,6 @@ public class IterationBurndown implements Serializable {
 
     @Override
     public String toString() {
-        return "IterationBurndown{" + "start=" + start + ", end=" + end + ", workDays=" + workDays + ", daysBetweenStartAndEnd=" + daysBetweenStartAndEnd + ", plannedHours=" + plannedHours + ", hoursRemaining=" + hoursRemaining + ", hoursDone=" + hoursDone + ", hoursAdded=" + hoursAdded  + ", includeWeekEnd=" + includeWeekend + ", burndowns=" + burndowns +  ", timeDomain=" + timeDomain + '}';
+        return "IterationBurndown{" + "start=" + start + "\n end=" + end + "\n workDays=" + workDays + "\n daysBetweenStartAndEnd=" + daysBetweenStartAndEnd + "\n plannedHours=" + plannedHours + "\n hoursRemaining=" + hoursRemaining + "\n hoursDone=" + hoursDone + "\n hoursAdded=" + hoursAdded  + "\n includeWeekEnd=" + includeWeekend + "\n burndowns=" + burndowns +  "\n timeDomain=" + timeDomain + '}';
     }
 }

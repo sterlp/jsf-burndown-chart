@@ -30,6 +30,7 @@ public class MyBean implements Serializable {
         burndown.addDay(new LocalDate(2013, 5, 7), 33, null);
         burndown.addDay(new LocalDate(2013, 5, 8), -44, "Added a new small story");
         burndown.addDay(new LocalDate(2013, 5, 8), 24, null);
+        System.out.println("Burndown:\n" + burndown);
     }
 
     public IterationBurndown getBurndown() {

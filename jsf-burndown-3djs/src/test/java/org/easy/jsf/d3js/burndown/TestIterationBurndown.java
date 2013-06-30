@@ -5,7 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestIterationBurndown {
-    
     @Test(expected = NullPointerException.class)
     public void testDateValidationNull() {
         new IterationBurndown(null, null, 0);
@@ -55,5 +54,31 @@ public class TestIterationBurndown {
         assertEquals(10, iteration.getHoursAdded());
         assertEquals(30, iteration.getHoursDone());
         assertEquals(180, iteration.getHoursRemaining());
+    }
+    
+    /**
+     * Even if we exclude the weekend we need to make sure
+     * that the time domain includes the day the iteration starts and
+     * end + any day we add to it ...
+     */
+    @Test
+    public void testTimeDomain() {
+        LocalDate startDate = new LocalDate(2013, 6, 8); // Saturday
+        LocalDate endDate = new LocalDate(2013, 6, 15); // Saturday
+        LocalDate burnDownDate = new LocalDate(2013, 6, 9); // Sunday
+        
+        IterationBurndown iteration = new IterationBurndown(startDate, endDate, 200, false);
+        
+        iteration.addDay(burnDownDate, 20, "Foo Bar"); // sunday
+        System.err.println(iteration);
+        
+        assertTrue("Start date missing", iteration.getTimeDomain().contains(startDate));
+        assertEquals(0, iteration.getTimeDomain().indexOf(startDate));
+        
+        assertTrue("Burn Down Day is missing!", iteration.getTimeDomain().contains(burnDownDate));
+        assertEquals(1, iteration.getTimeDomain().indexOf(burnDownDate));
+        
+        assertTrue("End date missing", iteration.getTimeDomain().contains(endDate));
+        assertEquals(7, iteration.getTimeDomain().indexOf(endDate));
     }
 }
