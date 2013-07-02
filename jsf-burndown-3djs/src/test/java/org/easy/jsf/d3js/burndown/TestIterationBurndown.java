@@ -24,7 +24,7 @@ public class TestIterationBurndown {
     public void testExcludeWeekends() {
         // Saturday to Saturday, 1W + 1 day
         IterationBurndown iteration = new IterationBurndown(new LocalDate(2013, 6, 1), new LocalDate(2013, 6, 8), 200);
-        assertEquals(5, iteration.getWorkDays());
+        assertEquals(7, iteration.getWorkDays());
         assertEquals(8, iteration.getDaysBetweenStartAndEnd());
     }
     
