@@ -1,25 +1,33 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
-   <groupId>org.easy.jsf.burndown</groupId>
-   <artifactId>jsf-burndown-sample</artifactId>
-   <packaging>war</packaging>
-   <name>easy JSF Burndown Sample</name>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.easy.jsf.burndown</groupId>
+    <artifactId>jsf-burndown-sample</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>Easy JSF Burndown Sample</name>
    
-   	<parent>
-		<groupId>org.easy.jsf.burndown</groupId>
-		<artifactId>burndown</artifactId>
-		<version>0.1.0-SNAPSHOT</version> 
-	</parent>
+    <properties>
+        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+        <jsf.version>2.1.19</jsf.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<properties>
-	 <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
-	</properties>
-
-	<build>
-		<defaultGoal>package</defaultGoal>
-		<finalName>jsf-burndown-sample</finalName>
-	</build>
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <finalName>jsf-burndown-sample</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -43,7 +51,7 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-			<artifactId>jsf-burndown-3djs</artifactId>
+            <artifactId>jsf-burndown-3djs</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -53,5 +61,5 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-   </dependencies>
+    </dependencies>
 </project>
