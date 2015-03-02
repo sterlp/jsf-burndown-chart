@@ -1,8 +1,6 @@
 package org.easy.jsf.d3js;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 

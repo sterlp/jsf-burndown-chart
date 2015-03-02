@@ -6,8 +6,8 @@
 
     <cc:interface componentType="org.easy.jsf.d3js.GraphContainer">
         <cc:attribute name="graphData" required="true" type="org.easy.jsf.d3js.burndown.IterationBurndown" />
-        <cc:attribute name="width" required="false" default="0" type="java.lang.Integer" />
-        <cc:attribute name="height" required="false" default="0" type="java.lang.Integer" />
+        <cc:attribute name="width" required="false" default="500" type="java.lang.Integer" />
+        <cc:attribute name="height" required="false" default="400" type="java.lang.Integer" />
         <cc:attribute name="showGrid" required="false" default="true" type="java.lang.Boolean" />
         <cc:attribute name="showComments" required="false" default="true" type="java.lang.Boolean" />
         <cc:facet name="header"/>
@@ -25,22 +25,30 @@
             </h:panelGroup>
             <h:panelGroup id="graphDiv" layout="block" styleClass="easy-3djs-graph" rendered="#{cc.attrs.graphData != null}">
                 <script type="text/javascript">
-                    (function() {
-                        var selector = "#" + "#{cc.clientId}" + ":graphDiv";
-                        selector = selector.replace(/:/g, "\\:");
+                    // let the Page render first before we draw something.
+                    setTimeout(function() {
+                        var selector = "#" + "#{cc.clientId}" + ":graphDiv",
+                            w = #{cc.attrs.width},
+                            c;
 
-                        SBD.render(
-                                #{cc.toJson(cc.attrs.graphData)},
-                                {
-                                    d3: d3,
-                                    chartNodeSelector: selector,
-                                    width: #{cc.attrs.width},
-                                    height: #{cc.attrs.height},
-                                    showGrid: #{cc.attrs.showGrid},
-                                    showComments: #{cc.attrs.showComments},
-                                    dateFormat: "%Y-%m-%d"
-                                });
-                   })();
+                        selector = selector.replace(/:/g, "\\:");
+                        if (!w || w === 0) {
+                            c = $(selector).parent('.easy-3djs');
+                            w = c.innerWidth() - 10;
+                            if (200 > w) { 
+                                w = 200; 
+                            }
+                        }
+                        SBD.render(#{cc.toJson(cc.attrs.graphData)}, {
+                            d3: d3,
+                            chartNodeSelector: selector,
+                            width: w,
+                            height: #{cc.attrs.height},
+                            showGrid: #{cc.attrs.showGrid},
+                            showComments: #{cc.attrs.showComments},
+                            dateFormat: "%Y-%m-%d"
+                        });
+                    }, 10);
                 </script>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="easy-3djs-footer">
