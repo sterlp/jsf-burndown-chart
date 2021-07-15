@@ -1,3 +1,8 @@
+# DEPRECATED
+JSF isn't really in use anymore.
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 easyJsfD3js
 ===========
 JSF wrapper for d3js - first to draw nice burn downs.
